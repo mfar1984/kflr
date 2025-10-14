@@ -1,0 +1,19 @@
+# Production Database Configuration for kflegacyresources.com
+# RENAME FILE INI JADI: .env (di server cPanel)
+
+DB_HOST=localhost
+DB_USER=kflegacy_kflegacyresources
+DB_PASSWORD=L2iPxADRAjNMdXiMhO
+DB_NAME=kflegacy_kflegacyresources
+
+# Server Configuration
+PORT=3000
+NODE_ENV=production
+
+# Email Configuration
+SMTP_HOST=indigo.herosite.pro
+SMTP_PORT=587
+SMTP_USER=enquiry@kflegacyresources.com
+SMTP_PASSWORD=F@iz@n!984
+SMTP_FROM=enquiry@kflegacyresources.com
+
