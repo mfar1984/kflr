@@ -15,7 +15,7 @@ export default function NetworkPage() {
               </div>
             </div>
             <div className="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-out" data-aos-delay="200">
-              <img src="/assets/img/background/serverroom.png" className="img-fluid animated" alt="" />
+              <img src="/assets/img/background/network-hero.png" className="img-fluid animated" alt="Network Solutions" />
             </div>
           </div>
         </div>

@@ -48,8 +48,9 @@ export default function Footer() {
               <Image src="/assets/img/footerlogo.png" alt="KF Legacy Resources" width={200} height={100} />
             </Link>
             <div className="footer-contact pt-3">
-              <p className="mb-1">C-1-104, Jalan 1a, Taman Bukit Segar,</p>
-              <p className="mb-2">56100 Cheras, Kuala Lumpur - <a className="map-link" href="https://www.google.com/maps/place/Jalan+1a,+56100+Kuala+Lumpur,+Wilayah+Persekutuan+Kuala+Lumpur/@3.0955451,101.7447359,19z/data=!4m5!3m4!1s0x31cc35c965d1018f:0x63662ea10fd76df5!8m2!3d3.0952143!4d101.7463184" target="_blank" rel="noopener">Maps</a></p>
+              <p className="mb-1">SUITE: 33-01, 33RD FLOOR,</p>
+              <p className="mb-2">MENARA KECK SENG 203 JALAN BUKIT BINTANG , 55100 KUALA<br/>
+              LUMPUR, WILAYAH PERSEKUTUAN - <a className="map-link" href="https://maps.app.goo.gl/DA2EY9UzUv8vJztr6" target="_blank" rel="noopener">Maps</a></p>
             </div>
           </div>
           <div className="col-lg-2 col-md-3 footer-links">

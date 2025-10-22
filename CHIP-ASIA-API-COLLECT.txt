@@ -1,0 +1,541 @@
+Create Purchase API
+{
+  "client": {
+    "email": "test@test.com",
+    "full_name": "Alan"
+  },
+  "purchase": {
+    "products": [
+      {
+        "name": "Mug",
+        "price": 1000
+      }
+    ]
+  },
+  "brand_id": "<<Brand_id>>"
+}
+
+
+Subcribtion With Free Trial
+{
+  "client": {
+    "email": "test@test.com",
+    "full_name": "Alan"
+  },
+  "purchase": {
+    "products": [
+      {
+        "name": "Free Trial",
+        "price": 0
+      }
+    ]
+  },
+  "skip_capture" : true,
+  "brand_id": "<<Brand_id>>"
+}
+
+
+Create Monthly Subcription
+{
+  "client": {
+    "email": "test@test.com",
+    "full_name": "Alan"
+  },
+  "purchase": {
+    "products": [
+      {
+        "name": "Subscription fee",
+        "price": 500
+      }
+    ]
+  },
+  "brand_id": "<<brand_id>>"
+}
+
+
+Charge Token API
+{
+  "recurring_token" : "<<free_trial_id>>"
+}
+
+
+Create with Registration Fee
+{
+  "client": {
+    "email": "test@test.com",
+    "full_name": "Alan"
+  },
+  "purchase": {
+    "products": [
+      {
+        "name": "Registration Fee",
+        "price": 2000
+      }
+    ]
+  },
+  "payment_method_whitelist" : ["visa", "mastercard", "maestro"],
+  "force_recurring" : true,
+  "brand_id": "<<Brand_id>>"
+}
+
+
+
+Create monthly subscription using Purchase API
+{
+  "client": {
+    "email": "test@test.com",
+    "full_name": "Alan"
+  },
+  "purchase": {
+    "products": [
+      {
+        "name": "Subscription fee",
+        "price": 500
+      }
+    ]
+  },
+  "brand_id": "<<brand_id>>"
+}
+
+
+Charge subcription fee id 
+{
+  "recurring_token" : "<<registration_fee_id>>"
+}
+
+
+Create Reservation fee using Purchases API
+{
+  "client": {
+    "email": "test@test.com",
+    "full_name": "Alan"
+  },
+  "purchase": {
+    "products": [
+      {
+        "name": "Room fee",
+        "price": 20000
+      },
+      {
+        "name": "Security deposit",
+        "price": 10000
+      }
+    ]
+  },
+  "skip_capture" : true,
+  "brand_id": "<<Brand_id>>"
+}
+
+
+Charge the funds using Capture Payment API
+{
+  "amount" : 30000
+}
+
+Security deposit
+{
+  "amount" : 20000
+}
+
+Create Purchase
+curl --request POST \
+  --url https://gate.chip-in.asia/api/v1/purchases/ \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "client": {
+    "email": "test@test.com"
+  },
+  "purchase": {
+    "products": [
+      {
+        "name": "test",
+        "price": 1000
+      }
+    ]
+  },
+  "brand_id": "409eb80e-3782-4b1d-afa8-b779759266a5"
+}'
+
+Retrieve a Purchase
+<?php
+
+$curl = curl_init();
+
+curl_setopt_array($curl, [
+  CURLOPT_URL => "https://gate.chip-in.asia/api/v1/purchases/{id}/",
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_ENCODING => "",
+  CURLOPT_MAXREDIRS => 10,
+  CURLOPT_TIMEOUT => 30,
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST => "GET",
+  CURLOPT_HTTPHEADER => [
+    "Authorization: Bearer <token>"
+  ],
+]);
+
+$response = curl_exec($curl);
+$err = curl_error($curl);
+
+curl_close($curl);
+
+if ($err) {
+  echo "cURL Error #:" . $err;
+} else {
+  echo $response;
+}
+
+Cancel a pending purchase
+<?php
+
+$curl = curl_init();
+
+curl_setopt_array($curl, [
+  CURLOPT_URL => "https://gate.chip-in.asia/api/v1/purchases/{id}/cancel/",
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_ENCODING => "",
+  CURLOPT_MAXREDIRS => 10,
+  CURLOPT_TIMEOUT => 30,
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST => "POST",
+  CURLOPT_HTTPHEADER => [
+    "Authorization: Bearer <token>"
+  ],
+]);
+
+$response = curl_exec($curl);
+$err = curl_error($curl);
+
+curl_close($curl);
+
+if ($err) {
+  echo "cURL Error #:" . $err;
+} else {
+  echo $response;
+}
+
+
+Release fund on hold
+<?php
+
+$curl = curl_init();
+
+curl_setopt_array($curl, [
+  CURLOPT_URL => "https://gate.chip-in.asia/api/v1/purchases/{id}/release/",
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_ENCODING => "",
+  CURLOPT_MAXREDIRS => 10,
+  CURLOPT_TIMEOUT => 30,
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST => "POST",
+  CURLOPT_HTTPHEADER => [
+    "Authorization: Bearer <token>"
+  ],
+]);
+
+$response = curl_exec($curl);
+$err = curl_error($curl);
+
+curl_close($curl);
+
+if ($err) {
+  echo "cURL Error #:" . $err;
+} else {
+  echo $response;
+}
+
+
+Capture a previously authorized payment
+curl --request POST \
+  --url https://gate.chip-in.asia/api/v1/purchases/{id}/capture/ \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "amount": 123
+}'
+
+
+Charge a purchase using a saved token
+curl --request POST \
+  --url https://gate.chip-in.asia/api/v1/purchases/{id}/charge/ \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "recurring_token": "ea582899-78ec-4c3a-9cb3-08f922e556b6"
+}'
+
+
+Delete a recurring token associated with a purchase
+curl --request POST \
+  --url https://gate.chip-in.asia/api/v1/purchases/{id}/delete_recurring_token/ \
+  --header 'Authorization: Bearer <token>'
+
+
+Refund a paid purchase
+curl --request POST \
+  --url https://gate.chip-in.asia/api/v1/purchases/{id}/refund/ \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "amount": 120
+}'
+
+
+Mark a purchase as paid
+curl --request POST \
+  --url https://gate.chip-in.asia/api/v1/purchases/{id}/mark_as_paid/ \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "paid_on": 1635162311
+}'
+
+
+Resend an invoice
+curl --request POST \
+  --url https://gate.chip-in.asia/api/v1/purchases/{id}/resend_invoice/ \
+  --header 'Authorization: Bearer <token>'
+
+
+List of payment methods
+curl --request GET \
+  --url https://gate.chip-in.asia/api/v1/payment_methods/ \
+  --header 'Authorization: Bearer <token>'
+
+
+Create a client
+curl --request POST \
+  --url https://gate.chip-in.asia/api/v1/clients/ \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "bank_account": "<string>",
+  "bank_code": "<string>",
+  "email": "jsmith@example.com",
+  "phone": "+44 45643564564",
+  "full_name": "<string>",
+  "personal_code": "<string>",
+  "street_address": "<string>",
+  "country": "<string>",
+  "city": "<string>",
+  "zip_code": "<string>",
+  "state": "<string>",
+  "shipping_street_address": "<string>",
+  "shipping_country": "<string>",
+  "shipping_city": "<string>",
+  "shipping_zip_code": "<string>",
+  "shipping_state": "<string>",
+  "cc": [
+    "jsmith@example.com"
+  ],
+  "bcc": [
+    "jsmith@example.com"
+  ],
+  "legal_name": "<string>",
+  "brand_name": "<string>",
+  "registration_number": "<string>",
+  "tax_number": "<string>"
+}'
+
+
+Retrieve a client
+curl --request GET \
+  --url https://gate.chip-in.asia/api/v1/clients/{id}/ \
+  --header 'Authorization: Bearer <token>'
+
+
+Update a client
+curl --request PUT \
+  --url https://gate.chip-in.asia/api/v1/clients/{id}/ \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "bank_account": "<string>",
+  "bank_code": "<string>",
+  "email": "jsmith@example.com",
+  "phone": "+44 45643564564",
+  "full_name": "<string>",
+  "personal_code": "<string>",
+  "street_address": "<string>",
+  "country": "<string>",
+  "city": "<string>",
+  "zip_code": "<string>",
+  "state": "<string>",
+  "shipping_street_address": "<string>",
+  "shipping_country": "<string>",
+  "shipping_city": "<string>",
+  "shipping_zip_code": "<string>",
+  "shipping_state": "<string>",
+  "cc": [
+    "jsmith@example.com"
+  ],
+  "bcc": [
+    "jsmith@example.com"
+  ],
+  "legal_name": "<string>",
+  "brand_name": "<string>",
+  "registration_number": "<string>",
+  "tax_number": "<string>"
+}'
+
+
+Partially update a client
+curl --request PATCH \
+  --url https://gate.chip-in.asia/api/v1/clients/{id}/ \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "bank_account": "<string>",
+  "bank_code": "<string>",
+  "email": "jsmith@example.com",
+  "phone": "+44 45643564564",
+  "full_name": "<string>",
+  "personal_code": "<string>",
+  "street_address": "<string>",
+  "country": "<string>",
+  "city": "<string>",
+  "zip_code": "<string>",
+  "state": "<string>",
+  "shipping_street_address": "<string>",
+  "shipping_country": "<string>",
+  "shipping_city": "<string>",
+  "shipping_zip_code": "<string>",
+  "shipping_state": "<string>",
+  "cc": [
+    "jsmith@example.com"
+  ],
+  "bcc": [
+    "jsmith@example.com"
+  ],
+  "legal_name": "<string>",
+  "brand_name": "<string>",
+  "registration_number": "<string>",
+  "tax_number": "<string>"
+}'
+
+
+Delete a client
+curl --request DELETE \
+  --url https://gate.chip-in.asia/api/v1/clients/{id}/ \
+  --header 'Authorization: Bearer <token>'
+
+
+List all clients
+curl --request GET \
+  --url https://gate.chip-in.asia/api/v1/clients/ \
+  --header 'Authorization: Bearer <token>'
+
+
+List recurring tokens
+curl --request GET \
+  --url https://gate.chip-in.asia/api/v1/clients/{id}/recurring_tokens/ \
+  --header 'Authorization: Bearer <token>'
+
+
+Retrieve a recurring token
+curl --request GET \
+  --url https://gate.chip-in.asia/api/v1/clients/{client_id}/recurring_tokens/{purchase_id}/ \
+  --header 'Authorization: Bearer <token>'
+
+
+Delete a recurring token
+curl --request DELETE \
+  --url https://gate.chip-in.asia/api/v1/clients/{client_id}/recurring_tokens/{purchase_id}/ \
+  --header 'Authorization: Bearer <token>'
+
+
+Create a webhook
+curl --request POST \
+  --url https://gate.chip-in.asia/api/v1/webhooks/ \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "title": "<string>",
+  "all_events": false,
+  "public_key": "<string>",
+  "events": [
+    "purchase.created"
+  ],
+  "callback": "<string>"
+}'
+
+
+Retrieve a webhook
+curl --request GET \
+  --url https://gate.chip-in.asia/api/v1/webhooks/{id}/ \
+  --header 'Authorization: Bearer <token>'
+
+
+Update a webhook
+curl --request PUT \
+  --url https://gate.chip-in.asia/api/v1/webhooks/{id}/ \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "title": "<string>",
+  "all_events": false,
+  "public_key": "<string>",
+  "events": [
+    "purchase.created"
+  ],
+  "callback": "<string>"
+}'
+
+
+Delete a webhook
+curl --request DELETE \
+  --url https://gate.chip-in.asia/api/v1/webhooks/{id}/ \
+  --header 'Authorization: Bearer <token>'
+
+
+List all webhooks
+curl --request GET \
+  --url https://gate.chip-in.asia/api/v1/webhooks/ \
+  --header 'Authorization: Bearer <token>'
+
+
+Retrieve a public key
+curl --request GET \
+  --url https://gate.chip-in.asia/api/v1/public_key/ \
+  --header 'Authorization: Bearer <token>'
+
+
+Get company balance
+curl --request GET \
+  --url https://gate.chip-in.asia/api/v1/account/json/balance/ \
+  --header 'Authorization: Bearer <token>'
+
+Get company turnover
+curl --request GET \
+  --url https://gate.chip-in.asia/api/v1/account/json/turnover/ \
+  --header 'Authorization: Bearer <token>'
+
+
+Schedule a statement
+curl --request POST \
+  --url https://gate.chip-in.asia/api/v1/company_statements/ \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "format": "csv",
+  "timezone": "UTC"
+}'
+
+
+Retrieve a statement
+curl --request GET \
+  --url https://gate.chip-in.asia/api/v1/company_statements/{id}/ \
+  --header 'Authorization: Bearer <token>'
+
+
+Cancel a statement
+curl --request POST \
+  --url https://gate.chip-in.asia/api/v1/company_statements/{id}/cancel/ \
+  --header 'Authorization: Bearer <token>'
+
+
+List all statements
+curl --request GET \
+  --url https://gate.chip-in.asia/api/v1/company_statements/ \
+  --header 'Authorization: Bearer <token>'

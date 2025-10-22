@@ -2,7 +2,12 @@ export default function BandwidthManagementPage() {
   return (
     <main className="main">
       {/* Hero Section */}
-      <section id="hero" className="hero section dark-background network-bandwidth-hero">
+      <section id="hero" className="hero section dark-background network-bandwidth-hero" style={{
+        backgroundImage: 'url(/assets/img/background/bandwidthmanagement.png)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
+      }}>
         <div className="container">
           <div className="row gy-4">
             <div className="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center" data-aos="zoom-out">
@@ -13,7 +18,7 @@ export default function BandwidthManagementPage() {
               </div>
             </div>
             <div className="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-out" data-aos-delay="200">
-              <img src="/assets/img/background/serverroom3.jpg" className="img-fluid animated" alt="" />
+              <img src="/assets/img/background/bandwidthmanagement-hero.png" className="img-fluid animated" alt="Bandwidth Management" />
             </div>
           </div>
         </div>

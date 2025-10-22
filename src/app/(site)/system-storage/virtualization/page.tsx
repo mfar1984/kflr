@@ -13,7 +13,7 @@ export default function VirtualizationPage() {
               </div>
             </div>
             <div className="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-out" data-aos-delay="200">
-              <img src="/assets/img/background/barcode-hero.png" className="img-fluid animated" alt="" />
+              <img src="/assets/img/background/systemstorage-hero.png" className="img-fluid animated" alt="Virtualization Solutions" />
             </div>
           </div>
         </div>

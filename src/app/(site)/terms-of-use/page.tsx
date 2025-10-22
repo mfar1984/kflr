@@ -5,7 +5,7 @@ export default function TermsOfUsePage() {
       <section className="page-title">
         <div className="container" data-aos="fade-up">
           <h1>Terms of Use</h1>
-          <p className="mb-0">Last Updated: 13 October 2025</p>
+          <p className="mb-0">Last Updated: 14 October 2025</p>
         </div>
       </section>
 
@@ -83,6 +83,78 @@ export default function TermsOfUsePage() {
                   <li className="mb-1"><i className="bi bi-dot"></i>We reserve the right to suspend services for accounts with overdue invoices exceeding 30 days</li>
                 </ul>
                 <p className="mb-5">All prices quoted are in Malaysian Ringgit (MYR) unless otherwise specified and exclude applicable taxes (GST/SST) which will be added to invoices as required by law. Exchange rates for foreign currency transactions will be determined at the time of invoice issuance.</p>
+
+                <h4 id="online-store" className="mb-3">7A. Online Store Purchases and Payment Processing</h4>
+                <p className="mb-3">For products purchased through our online store at www.kflegacyresources.com/store, the following terms apply:</p>
+                
+                <h5 className="mb-3" style={{fontSize: '1.1rem'}}>Payment Processing</h5>
+                <ul className="mb-4">
+                  <li className="mb-1"><i className="bi bi-dot"></i><strong>Payment Gateway:</strong> All online payments are processed securely through CHIP by Virtualtech Frontier Sdn Bhd, a licensed payment gateway provider in Malaysia</li>
+                  <li className="mb-1"><i className="bi bi-dot"></i><strong>Accepted Methods:</strong> Online banking (FPX), credit/debit cards (Visa, Mastercard), and e-wallets as available through CHIP</li>
+                  <li className="mb-1"><i className="bi bi-dot"></i><strong>Payment Currency:</strong> All online store transactions are processed in Malaysian Ringgit (MYR)</li>
+                  <li className="mb-1"><i className="bi bi-dot"></i><strong>Payment Security:</strong> Your payment information is encrypted and transmitted securely. KFLR does not store your credit card details</li>
+                  <li className="mb-1"><i className="bi bi-dot"></i><strong>Payment Confirmation:</strong> Upon successful payment, you will receive an order confirmation email with your order reference number</li>
+                </ul>
+
+                <h5 className="mb-3" style={{fontSize: '1.1rem'}}>Order Confirmation and Processing</h5>
+                <ul className="mb-4">
+                  <li className="mb-1"><i className="bi bi-dot"></i>Once payment is completed, your order is immediately confirmed and sent to our fulfillment team</li>
+                  <li className="mb-1"><i className="bi bi-dot"></i>You will receive an email confirmation containing your order details and reference number</li>
+                  <li className="mb-1"><i className="bi bi-dot"></i>Order processing typically begins within 1-2 business days of payment confirmation</li>
+                  <li className="mb-1"><i className="bi bi-dot"></i>You will be notified via email when your order is ready for shipping or collection</li>
+                </ul>
+
+                <h5 className="mb-3" style={{fontSize: '1.1rem'}}>Cancellation and Refund Policy</h5>
+                <div className="alert alert-danger mb-4">
+                  <h6 className="mb-2"><i className="bi bi-exclamation-triangle-fill me-2"></i>IMPORTANT: NO CANCELLATION AFTER PAYMENT</h6>
+                  <p className="mb-0"><strong>All online store purchases are final once payment is successfully completed.</strong> Due to the immediate processing of orders and the specialized nature of IT products, we DO NOT accept cancellations or refunds after payment has been made to the company.</p>
+                </div>
+                <p className="mb-3">Please note:</p>
+                <ul className="mb-4">
+                  <li className="mb-1"><i className="bi bi-dot"></i><strong>No Cancellations:</strong> Once your payment is confirmed, the order cannot be cancelled</li>
+                  <li className="mb-1"><i className="bi bi-dot"></i><strong>No Refunds:</strong> Payment amounts are non-refundable except in cases of duplicate charges or payment processing errors</li>
+                  <li className="mb-1"><i className="bi bi-dot"></i><strong>Pre-Order Items:</strong> Products marked as &quot;Pre-Order&quot; are subject to manufacturer availability and delivery timelines</li>
+                  <li className="mb-1"><i className="bi bi-dot"></i><strong>Review Before Purchase:</strong> Please carefully review your cart, shipping address, and product specifications before completing payment</li>
+                </ul>
+
+                <h5 className="mb-3" style={{fontSize: '1.1rem'}}>Product Pricing and Availability</h5>
+                <ul className="mb-4">
+                  <li className="mb-1"><i className="bi bi-dot"></i>Prices displayed on our online store are in MYR and include SST where applicable</li>
+                  <li className="mb-1"><i className="bi bi-dot"></i>Product availability is updated regularly but not guaranteed until payment is confirmed</li>
+                  <li className="mb-1"><i className="bi bi-dot"></i>We reserve the right to limit quantities or refuse orders at our discretion</li>
+                  <li className="mb-1"><i className="bi bi-dot"></i>In case of pricing errors, we will notify you and offer the option to proceed at the correct price or cancel before processing</li>
+                  <li className="mb-1"><i className="bi bi-dot"></i>For &quot;Contact for Price&quot; items, please request a quotation before placing an order</li>
+                </ul>
+
+                <h5 className="mb-3" style={{fontSize: '1.1rem'}}>Delivery and Shipping</h5>
+                <ul className="mb-4">
+                  <li className="mb-1"><i className="bi bi-dot"></i><strong>Shipping Costs:</strong> Calculated at checkout based on delivery location and product weight/size</li>
+                  <li className="mb-1"><i className="bi bi-dot"></i><strong>Delivery Time:</strong> Typically 3-7 business days for Peninsular Malaysia, 5-14 days for East Malaysia</li>
+                  <li className="mb-1"><i className="bi bi-dot"></i><strong>Pre-Order Items:</strong> Delivery time will be communicated separately based on stock availability</li>
+                  <li className="mb-1"><i className="bi bi-dot"></i><strong>Tracking:</strong> You will receive tracking information once your order is shipped</li>
+                  <li className="mb-1"><i className="bi bi-dot"></i><strong>Self-Collection:</strong> Available at our Kuala Lumpur or Sibu offices by appointment</li>
+                </ul>
+
+                <h5 className="mb-3" style={{fontSize: '1.1rem'}}>Returns and Warranty Claims</h5>
+                <p className="mb-3">While orders cannot be cancelled after payment, we do accept returns under the following limited circumstances:</p>
+                <ul className="mb-4">
+                  <li className="mb-1"><i className="bi bi-dot"></i><strong>Defective Products:</strong> Items that are defective or damaged upon arrival may be returned within 7 days of delivery</li>
+                  <li className="mb-1"><i className="bi bi-dot"></i><strong>Wrong Items:</strong> If we ship the wrong product, we will arrange for exchange at no cost to you</li>
+                  <li className="mb-1"><i className="bi bi-dot"></i><strong>Return Condition:</strong> Products must be unopened, unused, and in original packaging with all accessories and documentation</li>
+                  <li className="mb-1"><i className="bi bi-dot"></i><strong>Manufacturer Warranty:</strong> All products come with manufacturer warranty - warranty claims are handled according to manufacturer terms</li>
+                  <li className="mb-1"><i className="bi bi-dot"></i><strong>RMA Required:</strong> Contact our support team at enquiry@kflegacyresources.com to initiate a return or warranty claim</li>
+                </ul>
+                <div className="alert alert-warning mb-4">
+                  <p className="mb-0"><i className="bi bi-info-circle-fill me-2"></i><strong>Note:</strong> Returns due to &quot;change of mind&quot;, &quot;ordered wrong item&quot;, or &quot;no longer needed&quot; are NOT accepted. Please ensure you are ordering the correct products before completing payment.</p>
+                </div>
+
+                <h5 className="mb-3" style={{fontSize: '1.1rem'}}>Payment Disputes and Chargebacks</h5>
+                <ul className="mb-5">
+                  <li className="mb-1"><i className="bi bi-dot"></i>If you have concerns about a transaction, please contact us immediately at enquiry@kflegacyresources.com</li>
+                  <li className="mb-1"><i className="bi bi-dot"></i>Initiating a chargeback without first contacting us may result in suspension of your account and legal action</li>
+                  <li className="mb-1"><i className="bi bi-dot"></i>We will provide all necessary documentation to payment processors to resolve disputes fairly</li>
+                  <li className="mb-1"><i className="bi bi-dot"></i>Fraudulent chargebacks or payment disputes may be reported to relevant authorities</li>
+                </ul>
 
                 <h4 id="warranties" className="mb-3">8. Warranties and Support</h4>
                 <p className="mb-4">KFLR warrants that services will be performed in a professional and workmanlike manner in accordance with industry standards. However, we provide our Services and website content &quot;as is&quot; and &quot;as available&quot; without any warranties of any kind, either express or implied, including but not limited to implied warranties of merchantability, fitness for a particular purpose, or non-infringement.</p>
@@ -176,9 +248,9 @@ export default function TermsOfUsePage() {
                 <div className="p-4 rounded-3 bg-light mb-4">
                   <h6 className="mb-3">KF Legacy Resources</h6>
                   <p className="mb-2"><strong>Headquarters:</strong></p>
-                  <p className="mb-3">C-1-104, Jalan 1a, Taman Bukit Segar<br/>
-                  56100 Cheras, Kuala Lumpur<br/>
-                  Wilayah Persekutuan, Malaysia - <a className="map-link" href="https://www.google.com/maps/place/Jalan+1a,+56100+Kuala+Lumpur,+Wilayah+Persekutuan+Kuala+Lumpur/" target="_blank" rel="noopener">Maps</a></p>
+                  <p className="mb-3">SUITE: 33-01, 33RD FLOOR,<br/>
+                  MENARA KECK SENG 203 JALAN BUKIT BINTANG , 55100 KUALA<br/>
+                  LUMPUR, WILAYAH PERSEKUTUAN, Malaysia - <a className="map-link" href="https://maps.app.goo.gl/DA2EY9UzUv8vJztr6" target="_blank" rel="noopener">Maps</a></p>
                   
                   <p className="mb-2"><strong>Branch Office:</strong></p>
                   <p className="mb-3">No. 12B, Lot 1732, Block 4, 2nd Floor<br/>
@@ -218,6 +290,11 @@ export default function TermsOfUsePage() {
                   <li className="mb-3">
                     <a href="#payment-terms" className="text-decoration-none">
                       <i className="bi bi-chevron-right text-primary me-2"></i>Payment Terms
+                    </a>
+                  </li>
+                  <li className="mb-3">
+                    <a href="#online-store" className="text-decoration-none">
+                      <i className="bi bi-chevron-right text-primary me-2"></i>Online Store & Refunds
                     </a>
                   </li>
                   <li className="mb-3">

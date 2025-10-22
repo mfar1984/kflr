@@ -17,7 +17,26 @@ function PaymentSuccessContent() {
       clearCart();
       hasCleared.current = true;
     }
-  }, [clearCart]);
+
+    // Verify payment status with CHIP API and update database
+    if (reference) {
+      fetch('/api/chip/verify-payment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reference })
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log('✅ Payment verification:', data);
+          if (data.status === 'paid') {
+            console.log(`✅ Order ${reference} confirmed as PAID in database`);
+          }
+        })
+        .catch(error => {
+          console.error('❌ Payment verification failed:', error);
+        });
+    }
+  }, [clearCart, reference]);
 
   return (
     <main className="main">

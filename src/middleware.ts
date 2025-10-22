@@ -5,7 +5,8 @@ export function middleware(request: NextRequest) {
   // Force www only in production; allow localhost during development
   if (process.env.NODE_ENV === 'production') {
     const host = request.headers.get('host') || '';
-    if (host && !host.startsWith('www.kflegacyresources.com')) {
+    const isLocalHost = host.includes('localhost') || host.startsWith('127.0.0.1') || host.startsWith('0.0.0.0') || host.endsWith('.local');
+    if (host && !isLocalHost && !host.startsWith('www.kflegacyresources.com')) {
       const url = request.nextUrl.clone();
       url.hostname = 'www.kflegacyresources.com';
       url.port = '';
@@ -22,7 +23,7 @@ export function middleware(request: NextRequest) {
   // Relaxed CSP to keep site functional while still blocking risky sources
   // - Allow Google Fonts and inline styles (Bootstrap/Swiper)
   // - Allow inline scripts (Next.js/dev overlay) and unsafe-eval for dev tooling
-  // - Keep images to self/https (no blob:/data:)
+  // - Allow data: URIs for images (Bootstrap dropdown arrows use inline SVG)
   const isProd = process.env.NODE_ENV === 'production';
   const scriptPolicies = ["'self'", "'unsafe-inline'"].concat(isProd ? [] : ["'unsafe-eval'"]).join(' ');
   const csp = [
@@ -32,7 +33,7 @@ export function middleware(request: NextRequest) {
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' https://fonts.gstatic.com data:",
-    "img-src 'self' https:",
+    "img-src 'self' https: data:",
     "connect-src 'self'",
     "object-src 'none'",
     "frame-ancestors 'self'",

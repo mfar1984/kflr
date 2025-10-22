@@ -1,19 +1,21 @@
-# Production Database Configuration for kflegacyresources.com
-# RENAME FILE INI JADI: .env (di server cPanel)
-
+# Database Configuration
 DB_HOST=localhost
-DB_USER=kflegacy_kflegacyresources
-DB_PASSWORD=L2iPxADRAjNMdXiMhO
-DB_NAME=kflegacy_kflegacyresources
+DB_USER=root
+DB_PASSWORD=root
+DB_NAME=kflr
+DB_PORT=3306
 
-# Server Configuration
-PORT=3000
-NODE_ENV=production
+# Site URL Configuration
+SITE_URL=http://localhost:3000
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+
+# CHIP Payment Gateway Configuration (TEST KEY)
+CHIP_API_KEY=-fqwxKQQk_ynTTQle5PM2jPuuMWE0sn3lBNB9p-ErSdMid-xaIiq1y2Zn7oRz_3uGROi7WG0_JESXVH0MwwmtQ==
+CHIP_BRAND_ID=c5f96f76-b79c-4963-8698-086d6ce28062
 
 # Email Configuration
-SMTP_HOST=indigo.herosite.pro
-SMTP_PORT=587
+SMTP_HOST=mail.kflegacyresources.com
+SMTP_PORT=465
 SMTP_USER=enquiry@kflegacyresources.com
-SMTP_PASSWORD=F@iz@n!984
-SMTP_FROM=enquiry@kflegacyresources.com
+SMTP_PASS=your_email_password_here
 

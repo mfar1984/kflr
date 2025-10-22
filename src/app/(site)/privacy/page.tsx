@@ -17,7 +17,7 @@ export default function PrivacyPage() {
               <div className="p-4 p-lg-5 bg-white rounded-3 border shadow-sm privacy-content">
                 
                 <h4 id="who-are-we" className="mb-3">Who are we?</h4>
-                <p className="mb-4">We are KF Legacy Resources (&quot;KFLR&quot;, &quot;we&quot; or &quot;us&quot;). C-1-104, Jalan 1a, Taman Bukit Segar, 56100 Cheras, Kuala Lumpur, Wilayah Persekutuan, Malaysia.</p>
+                <p className="mb-4">We are KF Legacy Resources (&quot;KFLR&quot;, &quot;we&quot; or &quot;us&quot;). SUITE: 33-01, 33RD FLOOR, MENARA KECK SENG 203 JALAN BUKIT BINTANG , 55100 KUALA LUMPUR, WILAYAH PERSEKUTUAN, Malaysia.</p>
                 <p className="mb-5">We at KFLR are committed to safeguarding your privacy. This Privacy Policy describes how we may collect, use, share, and keep personal information about you. It also describes the choices available to you regarding the use of, your access to, and how to update and correct your personal information. Please make sure you read this Privacy Policy carefully.</p>
 
                 <h4 className="mb-3">What does this Privacy Policy cover?</h4>
@@ -121,8 +121,9 @@ export default function PrivacyPage() {
                   <p className="mb-2"><strong>If you are located in Kuala Lumpur:</strong></p>
                   <p className="mb-3">Privacy & Data Protection Office<br/>
                   KF Legacy Resources<br/>
-                  C-1-104, Jalan 1a, Taman Bukit Segar<br/>
-                  56100 Cheras, Kuala Lumpur<br/>
+                  SUITE: 33-01, 33RD FLOOR,<br/>
+                  MENARA KECK SENG 203 JALAN BUKIT BINTANG , 55100 KUALA<br/>
+                  LUMPUR, WILAYAH PERSEKUTUAN<br/>
                   Wilayah Persekutuan, Malaysia - <a className="map-link" href="https://www.google.com/maps/place/Jalan+1a,+56100+Kuala+Lumpur,+Wilayah+Persekutuan+Kuala+Lumpur/" target="_blank" rel="noopener">Maps</a></p>
                   
                   <p className="mb-2"><strong>If you are located in Sarawak:</strong></p>

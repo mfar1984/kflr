@@ -18,6 +18,8 @@ export default function BodyClass() {
       pathname === "/system-storage" || pathname.startsWith("/system-storage/") ||
       pathname === "/other-services" || pathname.startsWith("/other-services/") ||
       pathname === "/store" ||
+      pathname === "/cart" ||
+      pathname === "/checkout" ||
       pathname === "/privacy" ||
       pathname === "/disclaimer" ||
       pathname === "/terms-of-use" ||

@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Topbar from "@/components/Topbar";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import Script from "next/script";
 import BodyClass from "@/components/BodyClass";
 import SwiperInit from "@/components/SwiperInit";
-import ClientsWrapper from "@/components/ClientsWrapper";
+import ConditionalLayout from "@/components/ConditionalLayout";
 import { CartProvider } from "@/contexts/CartContext";
 
 export const metadata: Metadata = {
@@ -98,7 +95,7 @@ export default function RootLayout({
               ],
               address: {
                 '@type': 'PostalAddress',
-                streetAddress: 'C-1-104, Jalan 1a, Taman Bukit Segar',
+                streetAddress: 'SUITE: 33-01, 33RD FLOOR, MENARA KECK SENG 203 JALAN BUKIT BINTANG , 55100 KUALA LUMPUR, WILAYAH PERSEKUTUAN',
                 addressLocality: 'Cheras',
                 addressRegion: 'Kuala Lumpur',
                 postalCode: '56100',
@@ -149,11 +146,9 @@ export default function RootLayout({
         <CartProvider>
           <BodyClass />
           <SwiperInit />
-          <Topbar />
-          <Header />
-          {children}
-          <ClientsWrapper />
-          <Footer />
+          <ConditionalLayout>
+            {children}
+          </ConditionalLayout>
 
           {/* Vendor JS */}
           <Script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js" strategy="afterInteractive" />

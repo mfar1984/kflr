@@ -2,7 +2,12 @@ export default function CARRentalPage() {
   return (
     <main className="main">
       {/* Hero Section */}
-      <section id="hero" className="hero section dark-background other-car-hero">
+      <section id="hero" className="hero section dark-background other-car-hero" style={{
+        backgroundImage: 'url(/assets/img/background/carrental.png)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
+      }}>
         <div className="container">
           <div className="row gy-4">
             <div className="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center" data-aos="zoom-out">
@@ -13,7 +18,7 @@ export default function CARRentalPage() {
               </div>
             </div>
             <div className="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-out" data-aos-delay="200">
-              <img src="/assets/img/background/serverroom4.png" className="img-fluid animated" alt="" />
+              <img src="/assets/img/background/carrental-hero.png" className="img-fluid animated" alt="CAR Rental" />
             </div>
           </div>
         </div>

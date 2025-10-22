@@ -13,7 +13,7 @@ export default function ITProgrammingPage() {
               </div>
             </div>
             <div className="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-out" data-aos-delay="200">
-              <img src="/assets/img/background/career-hero.png" className="img-fluid animated" alt="" />
+              <img src="/assets/img/background/others-hero.png" className="img-fluid animated" alt="IT Programming & Development" />
             </div>
           </div>
         </div>

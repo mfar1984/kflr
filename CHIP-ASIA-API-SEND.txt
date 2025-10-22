@@ -1,0 +1,282 @@
+Allocate balance to CHIP Limit
+Allocate balance using Create Send Limit API.
+{
+    "amount" : 2000
+}
+
+
+Add recipient bank
+Add recipient bank using Add Bank Account API.
+{
+    "name" : "Vendor bank",
+    "account_number" : "5861122242",
+    "bank_code" : "OCBCMYKL"
+}
+
+
+Send funds to the recipient bank
+Send funds to the recipient bank using Create Send Instruction API.
+{
+    "bank_account_id" : 1,
+    "amount" : 1000,
+    "email" : "vendor@gmail.com",
+    "description" : "supplies",
+    "reference" : "invoice-123"
+}
+
+
+
+How to use the pre-request script?
+For Postman, simply add the given code snippet into postman pre-request script tab.
+Postman Pre-Request Script:
+var epoch = (new Date).getTime();
+var epochSecs = Math.floor( epoch / 1000 );
+pm.collectionVariables.set("epoch", epochSecs);
+var data = epochSecs.toString() + environment["api_key"];
+var hmacDigest = CryptoJS.enc.Hex.stringify(CryptoJS.HmacSHA512(data, environment["api_secret"]));
+pm.collectionVariables.set("checksum", hmacDigest);
+
+
+PHP code
+<?php
+
+$str = '1689826456e0645c9e-fcf2-4f29-a327-202f7ed3d969';
+$hmac = hash_hmac( 'sha512', $str, 'a118729e-4243-4145-83b3-0b8cb213fe8e' );
+
+
+List all accounts
+curl --request GET \
+  --url https://staging-api.chip-in.asia/api/send/accounts \
+  --header 'Authorization: Bearer <token>' \
+  --header 'checksum: <checksum>' \
+  --header 'epoch: <epoch>'
+
+
+Increase Budget Allocation
+curl --request POST \
+  --url https://staging-api.chip-in.asia/api/send/send_limits \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json' \
+  --header 'checksum: <checksum>' \
+  --header 'epoch: <epoch>' \
+  --data '{
+  "amount": 0
+}'
+
+
+Retrieve send limit
+curl --request GET \
+  --url https://staging-api.chip-in.asia/api/send/send_limits/{id} \
+  --header 'Authorization: Bearer <token>' \
+  --header 'checksum: <checksum>' \
+  --header 'epoch: <epoch>'
+
+
+List all send limits
+curl --request GET \
+  --url https://staging-api.chip-in.asia/api/send/send_limits \
+  --header 'Authorization: Bearer <token>' \
+  --header 'checksum: <checksum>' \
+  --header 'epoch: <epoch>'
+
+
+Resend approval request
+curl --request POST \
+  --url https://staging-api.chip-in.asia/api/send/send_limits/{id}/resend_approval_requests \
+  --header 'Authorization: Bearer <token>' \
+  --header 'checksum: <checksum>' \
+  --header 'epoch: <epoch>'
+
+
+Add a bank account
+curl --request POST \
+  --url https://staging-api.chip-in.asia/api/send/bank_accounts \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json' \
+  --header 'checksum: <checksum>' \
+  --header 'epoch: <epoch>' \
+  --data '{
+  "account_number": "157380111111",
+  "bank_code": "MBBEMYKL",
+  "name": "Ahmad Pintu"
+}'
+
+
+Retrieve a bank account
+curl --request GET \
+  --url https://staging-api.chip-in.asia/api/send/bank_accounts/{id} \
+  --header 'Authorization: Bearer <token>' \
+  --header 'checksum: <checksum>' \
+  --header 'epoch: <epoch>'
+
+
+Delete a bank account
+curl --request DELETE \
+  --url https://staging-api.chip-in.asia/api/send/bank_accounts/{id} \
+  --header 'Authorization: Bearer <token>' \
+  --header 'checksum: <checksum>' \
+  --header 'epoch: <epoch>'
+
+
+List all bank accounts
+curl --request GET \
+  --url https://staging-api.chip-in.asia/api/send/bank_accounts \
+  --header 'Authorization: Bearer <token>' \
+  --header 'checksum: <checksum>' \
+  --header 'epoch: <epoch>'
+
+
+Resend bank account webhook event
+curl --request POST \
+  --url https://staging-api.chip-in.asia/api/send/bank_accounts/{id}/resend_webhook_event \
+  --header 'Authorization: Bearer <token>' \
+  --header 'checksum: <checksum>' \
+  --header 'epoch: <epoch>'
+
+
+Create a send instruction
+curl --request POST \
+  --url https://staging-api.chip-in.asia/api/send/send_instructions \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json' \
+  --header 'checksum: <checksum>' \
+  --header 'epoch: <epoch>' \
+  --data '{
+  "bank_account_id": 1,
+  "amount": "100",
+  "description": "test",
+  "email": "email@gmail.com",
+  "reference": "f"
+}'
+
+
+Retrieve a send instruction
+curl --request GET \
+  --url https://staging-api.chip-in.asia/api/send/send_instructions/{id} \
+  --header 'Authorization: Bearer <token>' \
+  --header 'checksum: <checksum>' \
+  --header 'epoch: <epoch>'
+
+
+Delete a send instruction
+curl --request DELETE \
+  --url https://staging-api.chip-in.asia/api/send/send_instructions/{id} \
+  --header 'Authorization: Bearer <token>' \
+  --header 'checksum: <checksum>' \
+  --header 'epoch: <epoch>'
+
+
+List all send instructions
+curl --request GET \
+  --url https://staging-api.chip-in.asia/api/send/send_instructions \
+  --header 'Authorization: Bearer <token>' \
+  --header 'checksum: <checksum>' \
+  --header 'epoch: <epoch>'
+
+
+Resend send instruction webhook event
+curl --request POST \
+  --url https://staging-api.chip-in.asia/api/send/send_instructions/{id}/resend_webhook_event \
+  --header 'Authorization: Bearer <token>' \
+  --header 'checksum: <checksum>' \
+  --header 'epoch: <epoch>'
+
+
+Create a group
+curl --request POST \
+  --url https://staging-api.chip-in.asia/api/send/groups \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json' \
+  --header 'checksum: <checksum>' \
+  --header 'epoch: <epoch>' \
+  --data '{
+  "name": "First Group"
+}'
+
+
+Retrieve a group
+curl --request GET \
+  --url https://staging-api.chip-in.asia/api/send/groups/{id} \
+  --header 'Authorization: Bearer <token>' \
+  --header 'checksum: <checksum>' \
+  --header 'epoch: <epoch>'
+
+
+Update a group
+curl --request PATCH \
+  --url https://staging-api.chip-in.asia/api/send/groups/{id} \
+  --header 'Authorization: Bearer <token>' \
+  --header 'checksum: <checksum>' \
+  --header 'epoch: <epoch>'
+
+
+Delete a group
+curl --request DELETE \
+  --url https://staging-api.chip-in.asia/api/send/groups/{id} \
+  --header 'Authorization: Bearer <token>' \
+  --header 'checksum: <checksum>' \
+  --header 'epoch: <epoch>'
+
+
+List all groups
+curl --request GET \
+  --url https://staging-api.chip-in.asia/api/send/groups \
+  --header 'Authorization: Bearer <token>' \
+  --header 'checksum: <checksum>' \
+  --header 'epoch: <epoch>'
+
+
+Create a webhook
+curl --request POST \
+  --url https://staging-api.chip-in.asia/api/webhooks \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json' \
+  --header 'checksum: <checksum>' \
+  --header 'epoch: <epoch>' \
+  --data '{
+  "name": "First Webhook",
+  "callback_url": "https://yourwebsite.com/route",
+  "email": "email@chip-in.asia",
+  "event_hooks": [
+    [
+      "budget_allocation_status",
+      "bank_account_status",
+      "send_instruction_status"
+    ]
+  ]
+}'
+
+
+
+Retrieve a webhook
+curl --request GET \
+  --url https://staging-api.chip-in.asia/api/webhooks/{id} \
+  --header 'Authorization: Bearer <token>' \
+  --header 'checksum: <checksum>' \
+  --header 'epoch: <epoch>'
+
+
+Update a webhook
+curl --request PATCH \
+  --url https://staging-api.chip-in.asia/api/webhooks/{id} \
+  --header 'Authorization: Bearer <token>' \
+  --header 'checksum: <checksum>' \
+  --header 'epoch: <epoch>'
+
+
+Delete a webhook
+curl --request DELETE \
+  --url https://staging-api.chip-in.asia/api/webhooks/{id} \
+  --header 'Authorization: Bearer <token>' \
+  --header 'checksum: <checksum>' \
+  --header 'epoch: <epoch>'
+
+
+List all webhooks
+curl --request GET \
+  --url https://staging-api.chip-in.asia/api/webhooks \
+  --header 'Authorization: Bearer <token>' \
+  --header 'checksum: <checksum>' \
+  --header 'epoch: <epoch>'
+
+

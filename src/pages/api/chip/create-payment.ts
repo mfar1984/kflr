@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { query } from '@/lib/db';
 
 export default async function handler(
   req: NextApiRequest,
@@ -31,17 +32,27 @@ export default async function handler(
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
     const isLocalhost = siteUrl.includes('localhost');
     
+    // Prepare client data with optional bank details
+    const clientData: Record<string, unknown> = {
+      email: customerDetails.email,
+      phone: customerDetails.phone,
+      full_name: `${customerDetails.firstName} ${customerDetails.lastName}`,
+      street_address: customerDetails.address,
+      city: customerDetails.city,
+      zip_code: customerDetails.postcode,
+      country: customerDetails.country || 'MY',
+    };
+
+    // Add bank details if provided (for faster refunds)
+    if (customerDetails.bankAccount && customerDetails.bankCode) {
+      clientData.bank_account = customerDetails.bankAccount;
+      clientData.bank_code = customerDetails.bankCode;
+      console.log('✅ Bank details included for refunds');
+    }
+
     const purchaseData: Record<string, unknown> = {
       brand_id: CHIP_BRAND_ID,
-      client: {
-        email: customerDetails.email,
-        phone: customerDetails.phone,
-        full_name: `${customerDetails.firstName} ${customerDetails.lastName}`,
-        street_address: customerDetails.address,
-        city: customerDetails.city,
-        zip_code: customerDetails.postcode,
-        country: customerDetails.country || 'MY',
-      },
+      client: clientData,
       purchase: {
         total: Math.round(totalAmount * 100), // Convert to cents
         currency: 'MYR',
@@ -55,7 +66,7 @@ export default async function handler(
       reference: reference,
       success_redirect: `${siteUrl}/payment/success?reference=${reference}`,
       failure_redirect: `${siteUrl}/payment/failed?reference=${reference}`,
-      cancel_redirect: `${siteUrl}/cart`,
+      cancel_redirect: `${siteUrl}/payment/cancelled?reference=${reference}`,
       creator_agent: 'KF Legacy Resources Store v1.0',
       platform: 'api',
       send_receipt: true,
@@ -99,6 +110,69 @@ export default async function handler(
 
     if (response.ok && data.id) {
       console.log('✅ Payment created successfully:', data.id);
+      
+      // Save order to database
+      try {
+        const orderResult = await query(
+          `INSERT INTO orders (
+            reference, chip_payment_id, customer_first_name, customer_last_name,
+            customer_email, customer_phone, customer_address, customer_city,
+            customer_state, customer_postcode, customer_country, total_amount,
+            currency, status, chip_checkout_url, customer_bank_account,
+            customer_bank_code, customer_bank_holder_name, notes
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          [
+            reference,
+            data.id,
+            customerDetails.firstName,
+            customerDetails.lastName,
+            customerDetails.email,
+            customerDetails.phone,
+            customerDetails.address,
+            customerDetails.city,
+            customerDetails.state || null,
+            customerDetails.postcode,
+            customerDetails.country || 'MY',
+            totalAmount,
+            'MYR',
+            'pending',
+            data.checkout_url,
+            customerDetails.bankAccount || null,
+            customerDetails.bankCode || null,
+            customerDetails.bankHolderName || null,
+            customerDetails.notes || null
+          ]
+        ) as { insertId: number };
+
+        const orderId = orderResult.insertId;
+        console.log('✅ Order saved to database:', orderId);
+
+        // Save order items
+        for (const item of cartItems) {
+          await query(
+            `INSERT INTO order_items (
+              order_id, product_id, product_name, product_price, quantity,
+              selected_options, subtotal
+            ) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            [
+              orderId,
+              item.id,
+              item.name,
+              item.price,
+              item.quantity,
+              item.selectedOptions ? JSON.stringify(item.selectedOptions) : null,
+              item.price * item.quantity
+            ]
+          );
+        }
+        console.log(`✅ Saved ${cartItems.length} order items`);
+
+      } catch (dbError) {
+        console.error('❌ Database save error:', dbError);
+        // Continue anyway - payment was created successfully
+        // We can manually add order to DB later if needed
+      }
+
       return res.status(200).json({
         success: true,
         checkoutUrl: data.checkout_url,

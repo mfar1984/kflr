@@ -15,14 +15,14 @@ export default function Header() {
           <img src="/assets/img/logo.png" alt="KF Legacy Resources" />
         </Link>
         <Menu />
-        <Link href="/cart" className="position-relative me-3" style={{ fontSize: "1.5rem", color: "var(--color-primary)" }}>
-          <i className="bi bi-cart3"></i>
-          {totalItems > 0 && (
-            <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style={{ fontSize: "0.7rem" }}>
+        {totalItems > 0 && (
+          <Link href="/cart" className="position-relative me-3" style={{ fontSize: "16px", color: "#ffffff" }}>
+            <i className="bi bi-cart3"></i>
+            <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style={{ fontSize: "10px" }}>
               {totalItems}
             </span>
-          )}
-        </Link>
+          </Link>
+        )}
         <Link className="btn-getstarted" href="/request-quotation">Request Quotation</Link>
       </div>
     </header>

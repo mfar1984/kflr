@@ -21,6 +21,10 @@ export async function GET() {
     '/store/netgate-8300-base',
     '/store/netgate-8300-max',
     '/store/netgate-8300-taa',
+    '/store/basic-website',
+    '/store/ecommerce-website',
+    '/store/web-based-system',
+    '/store/web-based-system-android',
     '/cart',
     '/checkout',
     '/products',
@@ -29,6 +33,7 @@ export async function GET() {
     '/disclaimer',
     '/terms-of-use',
     '/sitemap',
+    '/admin/login',
   ];
   const body = `<?xml version="1.0" encoding="UTF-8"?>\n` +
     `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">` +

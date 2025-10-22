@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { query } from '@/lib/db';
 
 export default async function handler(
   req: NextApiRequest,
@@ -16,26 +17,61 @@ export default async function handler(
     // Verify the callback is from CHIP (in production, verify signature)
     // For now, we'll just log and store the payment status
 
-    const { status, reference } = paymentData;
+    const { status, reference, payment } = paymentData;
 
     // Handle different payment statuses
     switch (status) {
       case 'paid':
         console.log(`Payment successful for order ${reference}`);
-        // TODO: Update order status in database
-        // TODO: Send confirmation email
-        // TODO: Update inventory
+        try {
+          // Update order status to paid
+          await query(
+            `UPDATE orders 
+             SET status = 'paid', 
+                 paid_at = NOW(),
+                 payment_method = ?,
+                 updated_at = NOW()
+             WHERE reference = ?`,
+            [payment?.payment_method || 'online', reference]
+          );
+          console.log(`✅ Order ${reference} marked as paid`);
+          
+          // TODO: Send confirmation email
+          // TODO: Update inventory
+        } catch (dbError) {
+          console.error('❌ Failed to update order status:', dbError);
+        }
         break;
 
       case 'failed':
         console.log(`Payment failed for order ${reference}`);
-        // TODO: Update order status in database
-        // TODO: Send failure notification
+        try {
+          await query(
+            `UPDATE orders 
+             SET status = 'failed', updated_at = NOW()
+             WHERE reference = ?`,
+            [reference]
+          );
+          console.log(`✅ Order ${reference} marked as failed`);
+          // TODO: Send failure notification
+        } catch (dbError) {
+          console.error('❌ Failed to update order status:', dbError);
+        }
         break;
 
       case 'cancelled':
         console.log(`Payment cancelled for order ${reference}`);
-        // TODO: Update order status in database
+        try {
+          await query(
+            `UPDATE orders 
+             SET status = 'cancelled', updated_at = NOW()
+             WHERE reference = ?`,
+            [reference]
+          );
+          console.log(`✅ Order ${reference} marked as cancelled`);
+        } catch (dbError) {
+          console.error('❌ Failed to update order status:', dbError);
+        }
         break;
 
       default:

@@ -2,7 +2,12 @@ export default function InfrastructureSetupPage() {
   return (
     <main className="main">
       {/* Hero Section */}
-      <section id="hero" className="hero section dark-background network-infra-hero">
+      <section id="hero" className="hero section dark-background network-infra-hero" style={{
+        backgroundImage: 'url(/assets/img/background/infrastructure.png)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
+      }}>
         <div className="container">
           <div className="row gy-4">
             <div className="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center" data-aos="zoom-out">
@@ -13,7 +18,7 @@ export default function InfrastructureSetupPage() {
               </div>
             </div>
             <div className="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-out" data-aos-delay="200">
-              <img src="/assets/img/background/serverroom6.jpg" className="img-fluid animated" alt="" />
+              <img src="/assets/img/background/infrastructure-hero.png" className="img-fluid animated" alt="Network Infrastructure Setup" />
             </div>
           </div>
         </div>

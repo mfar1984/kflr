@@ -339,7 +339,16 @@ export default function StorePage() {
   return (
     <main className="main">
       {/* Hero Section */}
-      <section id="hero" className="hero section dark-background">
+      <section 
+        id="hero" 
+        className="hero section dark-background"
+        style={{
+          backgroundImage: 'url(/assets/img/background/store.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      >
         <div className="container">
           <div className="row gy-4">
             <div className="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center" data-aos="zoom-out">
@@ -357,7 +366,7 @@ export default function StorePage() {
               </div>
             </div>
             <div className="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-out" data-aos-delay="200">
-              <img src="/assets/img/server-room.png" className="img-fluid animated" alt="KF Legacy Store" />
+              <img src="/assets/img/background/store-hero.png" className="img-fluid animated" alt="KF Legacy Store" />
             </div>
           </div>
         </div>
@@ -509,43 +518,34 @@ export default function StorePage() {
                             </h5>
                           </div>
                           <div className="d-grid gap-2">
-                            {product.categories.includes("programming") ? (
-                              <>
-                                <a href="/request-quotation" className="btn btn-primary btn-sm">
-                                  <i className="bi bi-envelope me-2"></i>Request Quotation
-                                </a>
-                                <a href="/contact" className="btn btn-outline-primary btn-sm">
-                                  <i className="bi bi-telephone me-2"></i>Contact Sales
-                                </a>
-                              </>
-                            ) : (
-                              <>
-                                <button 
-                                  onClick={() => handleAddToCart(product)} 
-                                  className="btn btn-success btn-sm"
-                                >
-                                  <i className="bi bi-cart-plus me-2"></i>Add to Cart
-                                </button>
-                                <a 
-                                  href={
-                                    product.id === 1 ? "/store/netgate-1100" : 
-                                    product.id === 2 ? "/store/netgate-2100-base" : 
-                                    product.id === 3 ? "/store/netgate-2100-max" :
-                                    product.id === 4 ? "/store/netgate-4200-max" :
-                                    product.id === 5 ? "/store/netgate-6100-base" :
-                                    product.id === 6 ? "/store/netgate-6100-max" :
-                                    product.id === 7 ? "/store/netgate-8200-max" :
-                                    product.id === 8 ? "/store/netgate-8300-base" :
-                                    product.id === 9 ? "/store/netgate-8300-max" :
-                                    product.id === 10 ? "/store/netgate-8300-taa" :
-                                    "#"
-                                  } 
-                                  className="btn btn-outline-primary btn-sm"
-                                >
-                                  <i className="bi bi-info-circle me-2"></i>View Details
-                                </a>
-                              </>
-                            )}
+                            <button 
+                              onClick={() => handleAddToCart(product)} 
+                              className="btn btn-success btn-sm"
+                            >
+                              <i className="bi bi-cart-plus me-2"></i>Add to Cart
+                            </button>
+                            <a 
+                              href={
+                                product.id === 1 ? "/store/netgate-1100" : 
+                                product.id === 2 ? "/store/netgate-2100-base" : 
+                                product.id === 3 ? "/store/netgate-2100-max" :
+                                product.id === 4 ? "/store/netgate-4200-max" :
+                                product.id === 5 ? "/store/netgate-6100-base" :
+                                product.id === 6 ? "/store/netgate-6100-max" :
+                                product.id === 7 ? "/store/netgate-8200-max" :
+                                product.id === 8 ? "/store/netgate-8300-base" :
+                                product.id === 9 ? "/store/netgate-8300-max" :
+                                product.id === 10 ? "/store/netgate-8300-taa" :
+                                product.id === 11 ? "/store/basic-website" :
+                                product.id === 12 ? "/store/ecommerce-website" :
+                                product.id === 13 ? "/store/web-based-system" :
+                                product.id === 14 ? "/store/web-based-system-android" :
+                                "#"
+                              } 
+                              className="btn btn-outline-primary btn-sm"
+                            >
+                              <i className="bi bi-info-circle me-2"></i>View Details
+                            </a>
                           </div>
                         </div>
                       </div>

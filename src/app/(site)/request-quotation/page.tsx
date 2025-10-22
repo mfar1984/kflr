@@ -62,7 +62,9 @@ export default function RequestQuotationPage() {
 
               <div className="mb-3">
                 <span className="section-title-mini">Office</span>
-                <p className="mb-1">C-1-104, Jalan 1a, Taman Bukit Segar,<br/>56100 Cheras, Kuala Lumpur - <a className="map-link" href="https://www.google.com/maps/place/Jalan+1a,+56100+Kuala+Lumpur,+Wilayah+Persekutuan+Kuala+Lumpur/" target="_blank" rel="noopener">Maps</a></p>
+                <p className="mb-1">SUITE: 33-01, 33RD FLOOR,<br/>
+                MENARA KECK SENG 203 JALAN BUKIT BINTANG , 55100 KUALA<br/>
+                LUMPUR, WILAYAH PERSEKUTUAN - <a className="map-link" href="https://maps.app.goo.gl/DA2EY9UzUv8vJztr6" target="_blank" rel="noopener">Maps</a></p>
               </div>
               <div>
                 <span className="section-title-mini">Branch</span>

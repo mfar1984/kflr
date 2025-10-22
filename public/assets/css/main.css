@@ -1,3 +1,31 @@
+/* Topbar styles */
+#topbar.topbar {
+  position: fixed;
+  top: -40px; /* hidden by default (above viewport) */
+  left: 0;
+  right: 0;
+  z-index: 1031;
+  transition: top .25s ease-in-out;
+  background-color: #2c4b8e !important; /* requested color */
+  font-size: 12px; /* requested font size */
+  height: 32px; /* fixed height for precise header offset */
+  line-height: 32px; /* vertically center text without extra gap */
+  padding-top: 0; /* neutralize py-* paddings */
+  padding-bottom: 0;
+  border-bottom: none; /* avoid visual gap line */
+}
+
+/* Show topbar only after scroll */
+.scrolled #topbar.topbar {
+  top: 0; /* slide in when body has .scrolled */
+}
+
+/* When scrolled, place header below the topbar */
+.scrolled #header.fixed-top,
+.scrolled #header.sticky-top,
+.scrolled #header.scroll-up-sticky {
+  top: 32px; /* match fixed topbar height to remove gap */
+}
 /**
 * Template Name: Arsha
 * Template URL: https://bootstrapmade.com/arsha-free-bootstrap-html-template-corporate/
@@ -470,7 +498,7 @@ h6 {
   background-color: var(--background-color);
   padding: 6px 0;
   transition: all 0.5s;
-  z-index: 997;
+  z-index: 1030 !important;
 }
 
 .header .logo {
@@ -612,7 +640,7 @@ h6 {
     opacity: 0;
     transition: 0.3s;
     border-radius: 4px;
-    z-index: 99;
+    z-index: 1040 !important;
     box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);
   }
 
@@ -678,7 +706,7 @@ h6 {
     display: flex;
     transition: 0.3s;
     border-radius: 4px;
-    z-index: 99;
+    z-index: 1040 !important;
   }
 
   .navmenu .megamenu ul li {
@@ -722,7 +750,7 @@ h6 {
 
   .navmenu {
     padding: 0;
-    z-index: 9997;
+    z-index: 1050 !important;
   }
 
   .navmenu ul {
@@ -736,7 +764,7 @@ h6 {
     background-color: var(--nav-mobile-background-color);
     overflow-y: auto;
     transition: 0.3s;
-    z-index: 9998;
+    z-index: 1051 !important;
     box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);
   }
 

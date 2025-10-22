@@ -1,7 +1,28 @@
 "use client";
-import { useEffect, useRef } from "react";
+
+import { useEffect } from 'react';
 
 export default function About() {
+  useEffect(() => {
+    // Add global CSS to prevent selection in PDF modal
+    const style = document.createElement('style');
+    style.innerHTML = `
+      #ssmPdfModal * {
+        user-select: none !important;
+        -webkit-user-select: none !important;
+        -moz-user-select: none !important;
+        -ms-user-select: none !important;
+      }
+      #ssmPdfModal iframe {
+        pointer-events: auto;
+      }
+    `;
+    document.head.appendChild(style);
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+
   return (
     <section id="about" className="about section about-animated">
       <span className="float float-1"></span>
@@ -22,14 +43,14 @@ export default function About() {
               <p>We provide network infrastructure, management, security and technical support — from standalone networks to WAN — connecting branches securely with cost‑efficient, high‑speed networking.</p>
               <p className="mb-0">Through consultation, we deliver effective solutions aligned to each client’s objectives. Every customer is unique; we build long‑term trust by tailoring approaches to their potential, vision and goals.</p>
               <p className="mt-3 text-justify mb-0">
-                KF Legacy Resources with Registration Number: <strong>201503318537 (002488335-X)</strong> valid until <strong>14 November 2026</strong>
+                KF Legacy Resources with Registration Number: <strong>201503318537 (002488335-X)</strong> valid until <strong>14 November 2029</strong>
                 <button
                   type="button"
                   className="btn btn-sm btn-outline-primary ms-3 align-baseline"
                   data-bs-toggle="modal"
-                  data-bs-target="#ssmModal"
+                  data-bs-target="#ssmPdfModal"
                 >
-                  View SSM
+                  View SSM (PDF)
                 </button>
               </p>
             </div>
@@ -79,19 +100,64 @@ export default function About() {
           <div className="col-6 col-md-3 mb-3"><div className="fw-bold fs-3 text-primary">100%</div><div className="small text-secondary">Client Commitment</div></div>
         </div>
       </div>
-      {/* SSM Modal */}
-      <div className="modal fade" id="ssmModal" aria-hidden="true" aria-labelledby="ssmModalLabel" tabIndex={-1}>
-        <div className="modal-dialog modal-lg modal-dialog-centered">
-          <div className="modal-content" onContextMenu={(e) => e.preventDefault()}>
-            <div className="modal-header">
-              <h5 className="modal-title" id="ssmModalLabel">SSM Registration</h5>
-              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      {/* SSM PDF Modal */}
+      <div 
+        className="modal fade" 
+        id="ssmPdfModal" 
+        aria-hidden="true" 
+        aria-labelledby="ssmPdfModalLabel" 
+        tabIndex={-1}
+        onContextMenu={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          alert('⚠️ Right-click is disabled for this confidential document');
+          return false;
+        }}
+      >
+        <div 
+          className="modal-dialog modal-dialog-centered" 
+          style={{ maxWidth: '800px', height: '90vh', margin: '1rem auto' }}
+          onContextMenu={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+          }}
+        >
+          <div 
+            className="modal-content" 
+            style={{ display: 'flex', flexDirection: 'column', height: '100%' }}
+            onContextMenu={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              return false;
+            }}
+          >
+            <div className="modal-header bg-primary text-white">
+              <h5 className="modal-title text-white" id="ssmPdfModalLabel">
+                <i className="bi bi-file-earmark-text me-2"></i>SSM Registration - Confidential
+              </h5>
+              <button type="button" className="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div className="modal-body">
-              <SsmCanvas />
+            <div 
+              className="modal-body p-0" 
+              style={{ position: 'relative', padding: 0, flex: '1 1 auto', height: 0, minHeight: 0, overflow: 'hidden' }}
+              onContextMenu={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                alert('⚠️ Right-click is disabled for this confidential document');
+                return false;
+              }}
+            >
+              <SsmPdfViewer />
             </div>
-            <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <div className="modal-footer bg-light">
+              <div className="text-muted small me-auto">
+                <i className="bi bi-shield-lock-fill me-1 text-danger"></i>
+                <strong>Watermarked PDF:</strong> All copies contain permanent CONFIDENTIAL watermarks
+              </div>
+              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
+                <i className="bi bi-x-circle me-2"></i>Close
+              </button>
             </div>
           </div>
         </div>
@@ -100,55 +166,98 @@ export default function About() {
   );
 }
 
-function SsmCanvas() {
-  const ref = useRef<HTMLCanvasElement | null>(null);
-
+function SsmPdfViewer() {
   useEffect(() => {
-    const c = ref.current;
-    if (!c) return;
-    const parent = c.parentElement;
-    const ctx = c.getContext('2d');
-    if (!ctx) return;
-
-    const img = new Image();
-    img.onload = () => {
-      const ratio = img.width / img.height || 1;
-      const maxW = (parent?.clientWidth || img.width);
-      const w = Math.min(maxW, img.width);
-      const h = Math.round(w / ratio);
-      // Avoid hydration warnings for width/height changes
-      c.setAttribute('width', String(w));
-      c.setAttribute('height', String(h));
-      ctx.drawImage(img, 0, 0, w, h);
-      ctx.globalAlpha = 0.2;
-      ctx.fillStyle = '#000';
-      ctx.font = 'bold 20px sans-serif';
-      ctx.rotate(-Math.PI / 8);
-      for (let y = -h; y < h * 2; y += 80) {
-        for (let x = -w; x < w * 2; x += 220) {
-          ctx.fillText('KF LEGACY RESOURCES', x, y);
-        }
+    // Block screenshot keyboard shortcuts
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Block Print Screen (Windows)
+      if (e.key === 'PrintScreen') {
+        e.preventDefault();
+        alert('⚠️ Screenshot disabled for confidential document');
       }
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      // Block Cmd+Shift+3, Cmd+Shift+4, Cmd+Shift+5 (Mac screenshots)
+      if ((e.metaKey || e.ctrlKey) && e.shiftKey && ['3', '4', '5'].includes(e.key)) {
+        e.preventDefault();
+        alert('⚠️ Screenshot disabled for confidential document');
+      }
+      // Block Ctrl+P (Print)
+      if ((e.metaKey || e.ctrlKey) && e.key === 'p') {
+        e.preventDefault();
+        alert('⚠️ Printing disabled for confidential document');
+      }
     };
-    img.crossOrigin = 'anonymous';
-    img.src = '/assets/img/ssm/ssm.png';
+
+    document.addEventListener('keydown', handleKeyDown);
+    
+    // Block F12, Ctrl+Shift+I (DevTools)
+    const blockDevTools = (e: KeyboardEvent) => {
+      if (e.key === 'F12' || ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'I')) {
+        e.preventDefault();
+      }
+    };
+    
+    document.addEventListener('keydown', blockDevTools);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('keydown', blockDevTools);
+    };
   }, []);
 
   return (
     <div
-      style={{ position: 'relative', userSelect: 'none' as const }}
+      style={{ 
+        position: 'relative', 
+        userSelect: 'none' as const,
+        width: '100%',
+        height: '100%',
+        overflow: 'hidden',
+        backgroundColor: '#525659'
+      }}
       onContextMenu={(e) => e.preventDefault()}
       onMouseDown={(e) => { if (e.button === 2) e.preventDefault(); }}
+      onCopy={(e) => e.preventDefault()}
+      onCut={(e) => e.preventDefault()}
+      onPaste={(e) => e.preventDefault()}
+      onDragStart={(e) => e.preventDefault()}
     >
-      <canvas
-        ref={ref}
-        suppressHydrationWarning
-        className="w-100"
-        style={{ maxWidth: '100%', height: 'auto', pointerEvents: 'none' }}
+      {/* Watermarked PDF from API */}
+      <iframe
+        src="/api/pdf/watermark-ssm"
+        style={{
+          width: '100%',
+          height: '100%',
+          border: 'none',
+          display: 'block'
+        }}
+        title="SSM Registration PDF - Confidential"
       />
+      
+      {/* Screenshot Protection Badge */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '10px',
+          right: '10px',
+          backgroundColor: 'rgba(220, 53, 69, 0.95)',
+          color: 'white',
+          padding: '10px 20px',
+          borderRadius: '8px',
+          fontSize: '0.8rem',
+          fontWeight: 'bold',
+          zIndex: 10000,
+          pointerEvents: 'none',
+          userSelect: 'none',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
+          border: '2px solid rgba(255,255,255,0.3)'
+        }}
+      >
+        <i className="bi bi-shield-lock-fill me-2"></i>
+        CONFIDENTIAL - WATERMARKED
+      </div>
     </div>
   );
 }
+
 
 

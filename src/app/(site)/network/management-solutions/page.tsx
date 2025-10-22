@@ -13,7 +13,7 @@ export default function ManagementSolutionsPage() {
               </div>
             </div>
             <div className="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-out" data-aos-delay="200">
-              <img src="/assets/img/background/serverroom7.png" className="img-fluid animated" alt="" />
+              <img src="/assets/img/background/managementsolution-hero.png" className="img-fluid animated" alt="Network Management Solutions" />
             </div>
           </div>
         </div>

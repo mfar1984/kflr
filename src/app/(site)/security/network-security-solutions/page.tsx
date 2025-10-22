@@ -13,7 +13,7 @@ export default function NetworkSecuritySolutionsPage() {
               </div>
             </div>
             <div className="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-out" data-aos-delay="200">
-              <img src="/assets/img/background/privacy.jpg" className="img-fluid animated" alt="" />
+              <img src="/assets/img/background/security-hero.png" className="img-fluid animated" alt="Network Security Solutions" />
             </div>
           </div>
         </div>

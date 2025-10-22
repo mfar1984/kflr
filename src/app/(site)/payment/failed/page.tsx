@@ -2,11 +2,44 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 
 function PaymentFailedContent() {
   const searchParams = useSearchParams();
   const reference = searchParams?.get('reference');
+
+  useEffect(() => {
+    // Verify payment status with CHIP API and update database
+    if (reference) {
+      console.log(`🔍 Verifying failed payment for: ${reference}`);
+      
+      fetch('/api/chip/verify-payment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reference })
+      })
+        .then(res => {
+          console.log(`📡 verify-payment response status: ${res.status}`);
+          return res.json();
+        })
+        .then(data => {
+          console.log('✅ Payment verification response:', data);
+          console.log(`📊 DB Status: ${data.status}, CHIP Status: ${data.chipStatus}`);
+          
+          if (data.status === 'failed') {
+            console.log(`✅ Order ${reference} confirmed as FAILED in database`);
+          } else {
+            console.warn(`⚠️  Expected 'failed' but got: ${data.status}`);
+          }
+        })
+        .catch(error => {
+          console.error('❌ Payment verification error:', error);
+          console.error('Error details:', error.message);
+        });
+    } else {
+      console.warn('⚠️  No reference provided on failed page');
+    }
+  }, [reference]);
 
   return (
     <main className="main">

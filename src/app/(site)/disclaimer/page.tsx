@@ -107,9 +107,9 @@ export default function DisclaimerPage() {
                   <h6 className="mb-3">Contact Information</h6>
                   <p className="mb-2"><strong>Headquarters (Kuala Lumpur):</strong></p>
                   <p className="mb-3">KF Legacy Resources<br/>
-                  C-1-104, Jalan 1a, Taman Bukit Segar<br/>
-                  56100 Cheras, Kuala Lumpur<br/>
-                  Wilayah Persekutuan, Malaysia - <a className="map-link" href="https://www.google.com/maps/place/Jalan+1a,+56100+Kuala+Lumpur,+Wilayah+Persekutuan+Kuala+Lumpur/" target="_blank" rel="noopener">Maps</a><br/>
+                  SUITE: 33-01, 33RD FLOOR,<br/>
+                  MENARA KECK SENG 203 JALAN BUKIT BINTANG , 55100 KUALA<br/>
+                  LUMPUR, WILAYAH PERSEKUTUAN - <a className="map-link" href="https://maps.app.goo.gl/DA2EY9UzUv8vJztr6" target="_blank" rel="noopener">Maps</a><br/>
                   Email: enquiry@kflegacyresources.com</p>
                   
                   <p className="mb-2"><strong>Branch (Sarawak):</strong></p>

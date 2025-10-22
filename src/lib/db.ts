@@ -10,5 +10,11 @@ const pool = mysql.createPool({
   queueLimit: 0
 });
 
+// Helper function for executing queries
+export async function query(sql: string, params?: (string | string[] | number | null | boolean)[]) {
+  const [rows] = await pool.execute(sql, params);
+  return rows;
+}
+
 export default pool;
 
