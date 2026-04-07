@@ -12,7 +12,11 @@ const pool = mysql.createPool({
 
 // Helper function for executing queries
 export async function query(sql: string, params?: (string | string[] | number | null | boolean)[]) {
-  const [rows] = await pool.execute(sql, params);
+  // Use query() instead of execute() - execute() requires prepared statement support
+  // which may not be properly configured in all MySQL setups
+  const [rows] = params && params.length > 0 
+    ? await pool.query(sql, params) 
+    : await pool.query(sql);
   return rows;
 }
 

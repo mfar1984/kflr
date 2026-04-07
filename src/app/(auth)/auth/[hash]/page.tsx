@@ -8,6 +8,9 @@ import OrdersManagement from "@/components/admin/OrdersManagement";
 import Customers from "@/components/admin/Customers";
 import ChipTransactions from "@/components/admin/ChipTransactions";
 import Refunds from "@/components/admin/Refunds";
+import Products from "@/components/admin/Products";
+import Categories from "@/components/admin/Categories";
+import SettingsCatalog from "@/components/admin/SettingsCatalog";
 
 export default function AuthDashboardPage() {
   const params = useParams();
@@ -24,13 +27,13 @@ export default function AuthDashboardPage() {
   const [currentTime, setCurrentTime] = useState<string>("");
   
   // Current view state
-  const [currentView, setCurrentView] = useState<'dashboard' | 'orders' | 'customers' | 'chip-transactions' | 'refunds'>('dashboard');
+  const [currentView, setCurrentView] = useState<'dashboard' | 'orders' | 'customers' | 'chip-transactions' | 'refunds' | 'products' | 'categories' | 'settings-catalog'>('dashboard');
   
   // Chip-Asia balance
   const [chipBalance, setChipBalance] = useState<{ myr: number; usd: number; eur: number } | null>(null);
   
   // Navigate to different views
-  const navigateTo = (view: 'dashboard' | 'orders' | 'customers' | 'chip-transactions' | 'refunds') => {
+  const navigateTo = (view: 'dashboard' | 'orders' | 'customers' | 'chip-transactions' | 'refunds' | 'products' | 'categories' | 'settings-catalog') => {
     setCurrentView(view);
   };
 
@@ -195,10 +198,9 @@ export default function AuthDashboardPage() {
                 </button>
                 {activeSection === 'catalog' && (
                   <div className="submenu-container">
-                    <Link href="#" className="submenu-item sidebar-nav-item sidebar-nav-item-inactive">Products</Link>
-                    <Link href="#" className="submenu-item sidebar-nav-item sidebar-nav-item-inactive">Categories</Link>
-                    <Link href="#" className="submenu-item sidebar-nav-item sidebar-nav-item-inactive">Options / Variants</Link>
-                    <Link href="#" className="submenu-item sidebar-nav-item sidebar-nav-item-inactive">Media Library</Link>
+                    <button onClick={() => navigateTo('products')} className={`submenu-item sidebar-nav-item ${currentView === 'products' ? '' : 'sidebar-nav-item-inactive'} w-100 text-start border-0 bg-transparent`}>Products</button>
+                    <button onClick={() => navigateTo('categories')} className={`submenu-item sidebar-nav-item ${currentView === 'categories' ? '' : 'sidebar-nav-item-inactive'} w-100 text-start border-0 bg-transparent`}>Categories</button>
+                    <button onClick={() => navigateTo('settings-catalog')} className={`submenu-item sidebar-nav-item ${currentView === 'settings-catalog' ? '' : 'sidebar-nav-item-inactive'} w-100 text-start border-0 bg-transparent`}>Settings Catalog</button>
                   </div>
                 )}
               </div>
@@ -420,7 +422,15 @@ export default function AuthDashboardPage() {
                   </button>
                   <span className="breadcrumb-separator">›</span>
                   <span className="breadcrumb-current">
-                    {currentView === 'dashboard' ? 'Dashboard' : currentView === 'orders' ? 'Orders' : currentView === 'customers' ? 'Customers' : currentView === 'chip-transactions' ? 'CHIP Transactions' : 'Refunds'}
+                    {currentView === 'dashboard' ? 'Dashboard' 
+                      : currentView === 'orders' ? 'Orders' 
+                      : currentView === 'customers' ? 'Customers' 
+                      : currentView === 'chip-transactions' ? 'CHIP Transactions' 
+                      : currentView === 'refunds' ? 'Refunds'
+                      : currentView === 'products' ? 'Products'
+                      : currentView === 'categories' ? 'Categories'
+                      : currentView === 'settings-catalog' ? 'Settings Catalog'
+                      : 'Dashboard'}
                   </span>
                 </nav>
 
@@ -449,6 +459,9 @@ export default function AuthDashboardPage() {
             {currentView === 'customers' && <Customers />}
             {currentView === 'chip-transactions' && <ChipTransactions />}
             {currentView === 'refunds' && <Refunds />}
+            {currentView === 'products' && <Products />}
+            {currentView === 'categories' && <Categories />}
+            {currentView === 'settings-catalog' && <SettingsCatalog />}
           </main>
         </div>
       </div>
