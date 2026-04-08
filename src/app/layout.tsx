@@ -12,6 +12,9 @@ export const metadata: Metadata = {
     default: "KF Legacy Resources | pfSense Malaysia Partner & Network Security",
     template: "%s | KF Legacy Resources",
   },
+  other: {
+    'Content-Security-Policy': "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://fonts.googleapis.com https://fonts.gstatic.com https://www.google.com https://www.gstatic.com; connect-src 'self' https://www.google.com; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;",
+  },
   description:
     "pfSense Malaysia partner. KF Legacy Resources delivers network infrastructure, security, system & storage, and barcode/RFID solutions.",
   keywords: [
@@ -65,7 +68,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
       <head>
         {/* Favicons - use company logo */}
         <link rel="icon" href="/assets/img/logo.png" />

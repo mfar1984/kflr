@@ -5,6 +5,7 @@ import Topbar from "@/components/Topbar";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ClientsWrapper from "@/components/ClientsWrapper";
+import FloatingContact from "@/components/FloatingContact";
 
 export default function ConditionalLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -23,6 +24,7 @@ export default function ConditionalLayout({ children }: { children: React.ReactN
       {children}
       <ClientsWrapper />
       <Footer />
+      <FloatingContact />
     </>
   );
 }

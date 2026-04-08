@@ -1,17 +1,72 @@
 import nodemailer from 'nodemailer';
+import { query } from '@/lib/db';
+
+interface EmailSettings {
+  smtp_host: string;
+  smtp_port: string;
+  smtp_username: string;
+  smtp_password: string;
+  smtp_encryption: string;
+  smtp_from_name: string;
+  smtp_from_email: string;
+  smtp_reply_to: string;
+}
+
+async function getEmailSettings(): Promise<EmailSettings> {
+  try {
+    const rows = await query(
+      'SELECT setting_key, setting_value FROM site_settings WHERE setting_type = ?',
+      ['email']
+    ) as any[];
+
+    const settings: any = {};
+    rows.forEach((row) => {
+      settings[row.setting_key] = row.setting_value;
+    });
+
+    // Return settings with fallback to env vars
+    return {
+      smtp_host: settings.smtp_host || process.env.SMTP_HOST || 'indigo.herosite.pro',
+      smtp_port: settings.smtp_port || process.env.SMTP_PORT || '587',
+      smtp_username: settings.smtp_username || process.env.SMTP_USER || 'enquiry@kflegacyresources.com',
+      smtp_password: settings.smtp_password || process.env.SMTP_PASSWORD || 'F@iz@n!984',
+      smtp_encryption: settings.smtp_encryption || 'tls',
+      smtp_from_name: settings.smtp_from_name || 'KF Legacy Resources',
+      smtp_from_email: settings.smtp_from_email || process.env.SMTP_FROM || 'enquiry@kflegacyresources.com',
+      smtp_reply_to: settings.smtp_reply_to || 'enquiry@kflegacyresources.com',
+    };
+  } catch (error) {
+    console.error('Failed to fetch email settings from database:', error);
+    // Fallback to env vars
+    return {
+      smtp_host: process.env.SMTP_HOST || 'indigo.herosite.pro',
+      smtp_port: process.env.SMTP_PORT || '587',
+      smtp_username: process.env.SMTP_USER || 'enquiry@kflegacyresources.com',
+      smtp_password: process.env.SMTP_PASSWORD || 'F@iz@n!984',
+      smtp_encryption: 'tls',
+      smtp_from_name: 'KF Legacy Resources',
+      smtp_from_email: process.env.SMTP_FROM || 'enquiry@kflegacyresources.com',
+      smtp_reply_to: 'enquiry@kflegacyresources.com',
+    };
+  }
+}
 
 export async function createTransporter() {
+  const settings = await getEmailSettings();
+  
   return nodemailer.createTransport({
-    host: process.env.SMTP_HOST || 'indigo.herosite.pro',
-    port: parseInt(process.env.SMTP_PORT || '587'),
-    secure: false, // TLS
+    host: settings.smtp_host,
+    port: parseInt(settings.smtp_port),
+    secure: settings.smtp_encryption === 'ssl', // true for 465, false for other ports
     auth: {
-      user: process.env.SMTP_USER || 'enquiry@kflegacyresources.com',
-      pass: process.env.SMTP_PASSWORD || 'F@iz@n!984',
+      user: settings.smtp_username,
+      pass: settings.smtp_password,
     },
     tls: {
       rejectUnauthorized: false
-    }
+    },
+    connectionTimeout: 10000, // 10 seconds
+    greetingTimeout: 10000, // 10 seconds
   });
 }
 
@@ -31,11 +86,13 @@ export async function sendQuotationEmail(data: {
   attachmentName?: string;
 }) {
   const transporter = await createTransporter();
+  const settings = await getEmailSettings();
 
   // Email to admin
   const adminMailOptions = {
-    from: `"Enquiry / Request Support KFLR" <${process.env.SMTP_FROM || 'enquiry@kflegacyresources.com'}>`,
-    to: process.env.SMTP_USER || 'enquiry@kflegacyresources.com',
+    from: `"${settings.smtp_from_name}" <${settings.smtp_from_email}>`,
+    to: settings.smtp_username,
+    replyTo: settings.smtp_reply_to,
     subject: `New Quotation Request from ${data.firstName} ${data.lastName}`,
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
@@ -103,8 +160,9 @@ export async function sendQuotationEmail(data: {
 
   // Email to client
   const clientMailOptions = {
-    from: `"Enquiry / Request Support KFLR" <${process.env.SMTP_FROM || 'enquiry@kflegacyresources.com'}>`,
+    from: `"${settings.smtp_from_name}" <${settings.smtp_from_email}>`,
     to: data.email,
+    replyTo: settings.smtp_reply_to,
     subject: 'Thank you for your Quotation Request - KF Legacy Resources',
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
@@ -159,11 +217,13 @@ export async function sendQuotationEmail(data: {
 
 export async function sendSubscriptionEmails(data: { email: string }) {
   const transporter = await createTransporter();
+  const settings = await getEmailSettings();
 
   // Notify admin
   await transporter.sendMail({
-    from: `${process.env.SMTP_FROM || 'enquiry@kflegacyresources.com'}`,
-    to: process.env.SMTP_USER || 'enquiry@kflegacyresources.com',
+    from: `${settings.smtp_from_email}`,
+    to: settings.smtp_username,
+    replyTo: settings.smtp_reply_to,
     subject: 'New Newsletter Subscriber – KF Legacy Resources',
     text: `New subscriber: ${data.email}`,
   });
@@ -186,7 +246,7 @@ export async function sendSubscriptionEmails(data: { email: string }) {
             <td style="padding:28px 28px 8px 28px;">
               <h1 style="margin:0 0 8px 0;font-size:22px;line-height:28px;color:#0b1220;">Thank you for subscribing</h1>
               <p style="margin:0 0 16px 0;font-size:14px;line-height:22px;color:#334155;">Hi there,</p>
-              <p style="margin:0 0 16px 0;font-size:14px;line-height:22px;color:#334155;">You’re now subscribed to updates from <strong>KF Legacy Resources</strong>. We’ll occasionally share product updates, case studies and useful tips.</p>
+              <p style="margin:0 0 16px 0;font-size:14px;line-height:22px;color:#334155;">You're now subscribed to updates from <strong>KF Legacy Resources</strong>. We'll occasionally share product updates, case studies and useful tips.</p>
               <p style="margin:0 0 24px 0;font-size:14px;line-height:22px;color:#334155;">In the meantime, feel free to visit our website.</p>
               <table role="presentation" cellpadding="0" cellspacing="0">
                 <tr>
@@ -199,7 +259,7 @@ export async function sendSubscriptionEmails(data: { email: string }) {
           </tr>
           <tr>
             <td style="padding:16px 28px 28px 28px;border-top:1px solid #eef2f7;">
-              <p style="margin:0;font-size:12px;color:#64748b;">You’re receiving this email because you subscribed on our site. If this wasn’t you, simply ignore this email.</p>
+              <p style="margin:0;font-size:12px;color:#64748b;">You're receiving this email because you subscribed on our site. If this wasn't you, simply ignore this email.</p>
               <p style="margin:8px 0 0 0;font-size:12px;color:#94a3b8;">© ${new Date().getFullYear()} KF Legacy Resources</p>
             </td>
           </tr>
@@ -209,8 +269,9 @@ export async function sendSubscriptionEmails(data: { email: string }) {
   </table>`;
 
   await transporter.sendMail({
-    from: `${process.env.SMTP_FROM || 'enquiry@kflegacyresources.com'}`,
+    from: `${settings.smtp_from_email}`,
     to: data.email,
+    replyTo: settings.smtp_reply_to,
     subject: 'Thank you for subscribing – KF Legacy Resources',
     html,
     text: `Thank you for subscribing to KF Legacy Resources. Visit ${siteUrl}`,

@@ -11,6 +11,10 @@ import Refunds from "@/components/admin/Refunds";
 import Products from "@/components/admin/Products";
 import Categories from "@/components/admin/Categories";
 import SettingsCatalog from "@/components/admin/SettingsCatalog";
+import SettingsGeneral from "@/components/admin/SettingsGeneral";
+import AdminUsers from "@/components/admin/AdminUsers";
+import RolesPermissions from "@/components/admin/RolesPermissions";
+import Audit from "@/components/admin/Audit";
 
 export default function AuthDashboardPage() {
   const params = useParams();
@@ -27,13 +31,13 @@ export default function AuthDashboardPage() {
   const [currentTime, setCurrentTime] = useState<string>("");
   
   // Current view state
-  const [currentView, setCurrentView] = useState<'dashboard' | 'orders' | 'customers' | 'chip-transactions' | 'refunds' | 'products' | 'categories' | 'settings-catalog'>('dashboard');
+  const [currentView, setCurrentView] = useState<'dashboard' | 'orders' | 'customers' | 'chip-transactions' | 'refunds' | 'products' | 'categories' | 'settings-catalog' | 'settings-general' | 'admin-users' | 'roles-permissions' | 'audit'>('dashboard');
   
   // Chip-Asia balance
   const [chipBalance, setChipBalance] = useState<{ myr: number; usd: number; eur: number } | null>(null);
   
   // Navigate to different views
-  const navigateTo = (view: 'dashboard' | 'orders' | 'customers' | 'chip-transactions' | 'refunds' | 'products' | 'categories' | 'settings-catalog') => {
+  const navigateTo = (view: 'dashboard' | 'orders' | 'customers' | 'chip-transactions' | 'refunds' | 'products' | 'categories' | 'settings-catalog' | 'settings-general' | 'admin-users' | 'roles-permissions' | 'audit') => {
     setCurrentView(view);
   };
 
@@ -271,27 +275,6 @@ export default function AuthDashboardPage() {
                 <hr className="sidebar-separator-line" />
               </div>
 
-              {/* Users & Access - Accordion */}
-              <div>
-                <button
-                  onClick={() => setActiveSection(activeSection === 'users' ? null : 'users')}
-                  className="sidebar-nav-item sidebar-nav-item-inactive w-100 text-start border-0 bg-transparent"
-                  style={{ outline: 'none' }}
-                >
-                  <i className="bi bi-people sidebar-nav-icon"></i>
-                  <span style={{ flex: 1 }}>Users & Access</span>
-                  <i className={`bi ${activeSection === 'users' ? 'bi-chevron-down' : 'bi-chevron-right'}`} style={{ fontSize: '12px' }}></i>
-                </button>
-                {activeSection === 'users' && (
-                  <div className="submenu-container">
-                    <Link href="#" className="submenu-item sidebar-nav-item sidebar-nav-item-inactive">Admin Users</Link>
-                    <Link href="#" className="submenu-item sidebar-nav-item sidebar-nav-item-inactive">Roles / Permissions</Link>
-                    <Link href="#" className="submenu-item sidebar-nav-item sidebar-nav-item-inactive">Audit Logs</Link>
-                    <Link href="#" className="submenu-item sidebar-nav-item sidebar-nav-item-inactive">Sessions</Link>
-                  </div>
-                )}
-              </div>
-
               {/* Settings - Accordion */}
               <div>
                 <button
@@ -305,32 +288,21 @@ export default function AuthDashboardPage() {
                 </button>
                 {activeSection === 'settings' && (
                   <div className="submenu-container">
-                    <Link href="#" className="submenu-item sidebar-nav-item sidebar-nav-item-inactive">Company Profile</Link>
-                    <Link href="#" className="submenu-item sidebar-nav-item sidebar-nav-item-inactive">Payment Gateway</Link>
-                    <Link href="#" className="submenu-item sidebar-nav-item sidebar-nav-item-inactive">Email / SMTP</Link>
-                    <Link href="#" className="submenu-item sidebar-nav-item sidebar-nav-item-inactive">Site URL</Link>
-                    <Link href="#" className="submenu-item sidebar-nav-item sidebar-nav-item-inactive">Integrations</Link>
-                    <Link href="#" className="submenu-item sidebar-nav-item sidebar-nav-item-inactive">Maintenance Mode</Link>
-                  </div>
-                )}
-              </div>
-
-              {/* System - Accordion */}
-              <div>
-                <button
-                  onClick={() => setActiveSection(activeSection === 'system' ? null : 'system')}
-                  className="sidebar-nav-item sidebar-nav-item-inactive w-100 text-start border-0 bg-transparent"
-                  style={{ outline: 'none' }}
-                >
-                  <i className="bi bi-hdd-network sidebar-nav-icon"></i>
-                  <span style={{ flex: 1 }}>System</span>
-                  <i className={`bi ${activeSection === 'system' ? 'bi-chevron-down' : 'bi-chevron-right'}`} style={{ fontSize: '12px' }}></i>
-                </button>
-                {activeSection === 'system' && (
-                  <div className="submenu-container">
-                    <Link href="#" className="submenu-item sidebar-nav-item sidebar-nav-item-inactive">Cache / Revalidate</Link>
-                    <Link href="#" className="submenu-item sidebar-nav-item sidebar-nav-item-inactive">Error Logs</Link>
-                    <Link href="#" className="submenu-item sidebar-nav-item sidebar-nav-item-inactive">Backups / Export</Link>
+                    {/* Config Section */}
+                    <div style={{ fontSize: '11px', fontWeight: 600, color: '#6b7280', padding: '8px 16px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                      Config
+                    </div>
+                    <button onClick={() => navigateTo('settings-general')} className={`submenu-item sidebar-nav-item ${currentView === 'settings-general' ? '' : 'sidebar-nav-item-inactive'} w-100 text-start border-0 bg-transparent`} style={{ paddingLeft: '32px' }}>General</button>
+                    
+                    {/* Users & Access Section */}
+                    <div style={{ marginTop: '8px' }}>
+                      <div style={{ fontSize: '11px', fontWeight: 600, color: '#6b7280', padding: '8px 16px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                        Users & Access
+                      </div>
+                      <button onClick={() => navigateTo('admin-users')} className={`submenu-item sidebar-nav-item ${currentView === 'admin-users' ? '' : 'sidebar-nav-item-inactive'} w-100 text-start border-0 bg-transparent`} style={{ paddingLeft: '32px' }}>Admin Users</button>
+                      <button onClick={() => navigateTo('roles-permissions')} className={`submenu-item sidebar-nav-item ${currentView === 'roles-permissions' ? '' : 'sidebar-nav-item-inactive'} w-100 text-start border-0 bg-transparent`} style={{ paddingLeft: '32px' }}>Roles / Permissions</button>
+                      <button onClick={() => navigateTo('audit')} className={`submenu-item sidebar-nav-item ${currentView === 'audit' ? '' : 'sidebar-nav-item-inactive'} w-100 text-start border-0 bg-transparent`} style={{ paddingLeft: '32px' }}>Audit</button>
+                    </div>
                   </div>
                 )}
               </div>
@@ -430,6 +402,10 @@ export default function AuthDashboardPage() {
                       : currentView === 'products' ? 'Products'
                       : currentView === 'categories' ? 'Categories'
                       : currentView === 'settings-catalog' ? 'Settings Catalog'
+                      : currentView === 'settings-general' ? 'Settings - General'
+                      : currentView === 'admin-users' ? 'Settings - Admin Users'
+                      : currentView === 'roles-permissions' ? 'Settings - Roles & Permissions'
+                      : currentView === 'audit' ? 'Settings - Audit'
                       : 'Dashboard'}
                   </span>
                 </nav>
@@ -462,6 +438,10 @@ export default function AuthDashboardPage() {
             {currentView === 'products' && <Products />}
             {currentView === 'categories' && <Categories />}
             {currentView === 'settings-catalog' && <SettingsCatalog />}
+            {currentView === 'settings-general' && <SettingsGeneral />}
+            {currentView === 'admin-users' && <AdminUsers />}
+            {currentView === 'roles-permissions' && <RolesPermissions />}
+            {currentView === 'audit' && <Audit />}
           </main>
         </div>
       </div>

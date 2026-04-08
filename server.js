@@ -19,6 +19,14 @@ app
     server.listen(port, () => {
       // eslint-disable-next-line no-console
       console.log(`Next.js server running on port ${port} (env: ${process.env.NODE_ENV || 'development'})`);
+      
+      // Initialize backup scheduler
+      try {
+        const { initializeBackupScheduler } = require('./src/lib/init-backup-scheduler');
+        initializeBackupScheduler();
+      } catch (error) {
+        console.error('Failed to initialize backup scheduler:', error);
+      }
     });
   })
   .catch((err) => {
