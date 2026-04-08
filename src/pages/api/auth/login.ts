@@ -2,7 +2,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import { query } from '@/lib/db';
-import { getAuthConfig } from '@/config/auth';
 import { rateLimit } from '@/lib/rate-limit';
 import { checkLoginAttempts, recordFailedLogin, resetLoginAttempts } from '@/lib/login-attempts';
 
@@ -31,9 +30,9 @@ function generateSessionHash(): string {
   return crypto.randomBytes(32).toString('hex');
 }
 
-// Ensure admins table and seed default admin
+// Ensure admins table exists (no default seeding)
 let didEnsure = false;
-async function ensureAdminSeed(ADMIN_USERNAME: string, ADMIN_PASSWORD: string): Promise<void> {
+async function ensureAdminsTable(): Promise<void> {
   if (didEnsure) return;
   
   await query(`
@@ -45,21 +44,6 @@ async function ensureAdminSeed(ADMIN_USERNAME: string, ADMIN_PASSWORD: string): 
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
   `);
 
-  // Check if admin exists
-  const existing = await query(
-    'SELECT id FROM admins WHERE username = ? LIMIT 1',
-    [ADMIN_USERNAME]
-  ) as Array<{ id: number }>;
-
-  // If not exists, create with bcrypt hash
-  if (!existing || existing.length === 0) {
-    const hash = await hashPassword(ADMIN_PASSWORD);
-    await query(
-      'INSERT INTO admins (username, password_hash) VALUES (?, ?)',
-      [ADMIN_USERNAME, hash]
-    );
-  }
-
   didEnsure = true;
 }
 
@@ -68,18 +52,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
-  // Get auth config from database
-  const AUTH_CONFIG = await getAuthConfig();
-  const ADMIN_USERNAME = AUTH_CONFIG.adminUsername;
-  const ADMIN_PASSWORD = AUTH_CONFIG.adminPassword;
-
   // Rate limiting: Max 10 login attempts per 15 minutes per IP
   if (!rateLimit(req, res, { maxRequests: 10, windowMs: 15 * 60 * 1000 })) {
     return; // Response already sent by rateLimit
   }
 
   try {
-    await ensureAdminSeed(ADMIN_USERNAME, ADMIN_PASSWORD);
+    // Ensure admins table exists (no seeding, just table creation)
+    await ensureAdminsTable();
 
     const { username, password } = req.body as { username?: string; password?: string };
     const normalizedUsername = (username || '').trim().toLowerCase();
@@ -100,41 +80,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       });
     }
 
-    // Look up admin user
+    // Look up admin user from database
     const rows = await query(
       'SELECT id, username, password_hash FROM admins WHERE username = ? LIMIT 1',
       [normalizedUsername]
     ) as Array<AdminRow>;
 
-    let admin: AdminRow | undefined = rows && rows.length > 0 ? rows[0] : undefined;
+    const admin: AdminRow | undefined = rows && rows.length > 0 ? rows[0] : undefined;
 
-    // If no admin found, check default credentials
+    // If no admin found, invalid credentials
     if (!admin) {
-      if (normalizedUsername === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-        const hash = await hashPassword(password);
-        await query(
-          'INSERT INTO admins (username, password_hash) VALUES (?, ?)',
-          [ADMIN_USERNAME, hash]
-        );
-        admin = { id: 0, username: ADMIN_USERNAME, password_hash: hash };
-      } else {
-        await new Promise(resolve => setTimeout(resolve, 800));
-        return res.status(401).json({ message: 'Invalid credentials' });
-      }
+      await new Promise(resolve => setTimeout(resolve, 800));
+      return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    // Verify password
-    let isValid = await verifyPassword(admin.password_hash, password);
-
-    // Fallback: check plain password and rehash
-    if (!isValid && password === ADMIN_PASSWORD && admin.username === ADMIN_USERNAME) {
-      const newHash = await hashPassword(password);
-      await query(
-        'UPDATE admins SET password_hash = ? WHERE username = ? LIMIT 1',
-        [newHash, admin.username]
-      );
-      isValid = true;
-    }
+    // Verify password against hash in database
+    const isValid = await verifyPassword(admin.password_hash, password);
 
     if (!isValid) {
       // Record failed login attempt

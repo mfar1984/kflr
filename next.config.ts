@@ -6,9 +6,6 @@ const nextConfig: NextConfig = {
   // Externalize packages that should not be bundled
   serverExternalPackages: ['pdf-lib', 'mysql2'],
   
-  // Empty turbopack config to use Turbopack with webpack config
-  turbopack: {},
-  
   webpack: (config, { isServer }) => {
     if (isServer) {
       // Mark these packages as external (don't bundle them)

@@ -20,12 +20,15 @@ app
       // eslint-disable-next-line no-console
       console.log(`Next.js server running on port ${port} (env: ${process.env.NODE_ENV || 'development'})`);
       
-      // Initialize backup scheduler
-      try {
-        const { initializeBackupScheduler } = require('./src/lib/init-backup-scheduler');
-        initializeBackupScheduler();
-      } catch (error) {
-        console.error('Failed to initialize backup scheduler:', error);
+      // Initialize backup scheduler (only in production after build)
+      if (!dev) {
+        try {
+          // In production, the module is compiled into .next
+          // We'll initialize it via API call instead
+          console.log('Backup scheduler will initialize on first API call');
+        } catch (error) {
+          console.error('Failed to initialize backup scheduler:', error);
+        }
       }
     });
   })

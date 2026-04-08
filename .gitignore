@@ -49,3 +49,12 @@ hardening/
 # Markdown files (except README.md)
 *.md
 !README.md
+
+# Archive files
+*.zip
+*.7z
+*.7zip
+*.rar
+*.tar
+*.tar.gz
+*.tgz
